@@ -1,0 +1,26 @@
+{
+    "name": "docker-compose-remote-api",
+    "version": "0.0.1",
+    "description": "Integration module with docker-compose same Docker Remote API",
+    "author": "André Ferreira <andrehrf@gmail.com>",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jsrun/docker-compose-remote-api"
+    },
+    "keywords": [
+        "docker",
+        "docker-compose",
+        "remote",
+        "api"
+    ],
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/jsrun/docker-compose-remote-api/issues"
+    },
+    "homepage": "https://github.com/jsrun/docker-compose-remote-api",
+    "dependencies": {
+        "js-yaml": "3.7.0",
+        "dockerode": "2.3.1"
+    }
+}
