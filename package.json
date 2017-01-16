@@ -1,6 +1,6 @@
 {
     "name": "docker-compose-remote-api",
-    "version": "0.0.1",
+    "version": "0.1.1",
     "description": "Integration module with docker-compose same Docker Remote API",
     "author": "André Ferreira <andrehrf@gmail.com>",
     "main": "index.js",
