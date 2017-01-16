@@ -1,7 +1,7 @@
 # Docker Componse + Docker Remote API
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/andrehrf/zanox-api-nodejs/master/LICENSE)
-[![npm version](https://badge.fury.io/js/zanox-api.svg)](https://badge.fury.io/js/zanox-api)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/jsrun/docker-compose-remote-api/master/LICENSE)
+[![npm version](https://badge.fury.io/js/docker-compose-remote-api.svg)](https://badge.fury.io/js/docker-compose-remote-api)
 
 Connection interface between docker-compose and the Docker Remote API
 
