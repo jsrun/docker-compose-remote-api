@@ -227,6 +227,7 @@ module.exports = function(options) {
                     if(err) fn(err, null);
                     else if(stderr) fn(stderr, null);
                     else if(stdout) fn(null, stdout.replace("\r", "").replace("\n", "").substr(0, 12));
+                    else fn("The requested container does not exist or is not currently active", null);
                 });
             }
         };
