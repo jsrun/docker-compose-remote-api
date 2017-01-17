@@ -17,12 +17,14 @@ module.exports = function(options) {
          * @see https://docs.docker.com/compose/reference/build/
          * @param function fnStdout
          * @param function fnStderr
+         * @param function fnExit
          * @return void 
          */
-        build: function(fnStdout, fnStderr){
+        build: function(fnStdout, fnStderr, fnExit){
             var execDockerCompose  = exec("docker-compose build", { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
+            execDockerCompose.on("exit", fnExit);
         },
         
         /**
@@ -30,12 +32,14 @@ module.exports = function(options) {
          * @see https://docs.docker.com/compose/reference/create/
          * @param function fnStdout
          * @param function fnStderr
+         * @param function fnExit
          * @return void
          */
-        create: function(fnStdout, fnStderr){
+        create: function(fnStdout, fnStderr, fnExit){
             var execDockerCompose  = exec("docker-compose create --force-recreate --build", { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
+            execDockerCompose.on("exit", fnExit);
         },
         
         /**
@@ -51,12 +55,14 @@ module.exports = function(options) {
          * @see https://docs.docker.com/compose/reference/down/
          * @param function fnStdout
          * @param function fnStderr
+         * @param function fnExit
          * @return void
          */
-        down: function(fnStdout, fnStderr){
+        down: function(fnStdout, fnStderr, fnExit){
             var execDockerCompose  = exec("docker-compose down --remove-orphans", { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
+            execDockerCompose.on("exit", fnExit);
         },
         
         /**
@@ -64,10 +70,11 @@ module.exports = function(options) {
          * @see https://docs.docker.com/compose/reference/events/
          * 
          */
-        events: function(fnStdout, fnStderr){
+        events: function(fnStdout, fnStderr, fnExit){
             var spawnDockerCompose  = spawn("docker-compose", ["events", "--json"], { cwd: cwd });
             spawnDockerCompose.stdout.on('data', function (data) { fnStdout(JSON.parse(data.toString())); });
             spawnDockerCompose.stderr.on('data', function (data) { fnStderr(data.toString()); });
+            execDockerCompose.on("exit", fnExit);
         },
         
         /**
@@ -77,12 +84,14 @@ module.exports = function(options) {
          * @param string cmd
          * @param function fnStdout
          * @param function fnStderr
+         * @param function fnExit
          * @return void
          */
-        exec: function(serviceName, cmd, fnStdout, fnStderr){
+        exec: function(serviceName, cmd, fnStdout, fnStderr, fnExit){
             var execDockerCompose  = exec("docker-compose exec " + serviceName + " " + cmd, { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
+            execDockerCompose.on("exit", fnExit);
         },
         
         /**
@@ -91,12 +100,14 @@ module.exports = function(options) {
          * @param string containerName
          * @param function fnStdout
          * @param function fnStderr
+         * @param function fnExit
          * @return void
          */
-        kill: function(serviceName, fnStdout, fnStderr){
+        kill: function(serviceName, fnStdout, fnStderr, fnExit){
             var execDockerCompose  = exec("docker-compose kill -s SIGINT " + serviceName, { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
+            execDockerCompose.on("exit", fnExit);
         },
         
         /**
@@ -105,12 +116,14 @@ module.exports = function(options) {
          * @param string containerName
          * @param function fnStdout
          * @param function fnStderr
+         * @param function fnExit
          * @return void
          */
-        restart: function(serviceName, fnStdout, fnStderr){
+        restart: function(serviceName, fnStdout, fnStderr, fnExit){
             var execDockerCompose  = exec("docker-compose restart " + serviceName, { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
+            execDockerCompose.on("exit", fnExit);
         },
         
         /**
@@ -119,12 +132,14 @@ module.exports = function(options) {
          * @param string containerName
          * @param function fnStdout
          * @param function fnStderr
+         * @param function fnExit
          * @return void
          */
-        rm: function(serviceName, fnStdout, fnStderr){
+        rm: function(serviceName, fnStdout, fnStderr, fnExit){
             var execDockerCompose  = exec("docker-compose rm -f " + serviceName, { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
+            execDockerCompose.on("exit", fnExit);
         },
         
         /**
@@ -134,12 +149,14 @@ module.exports = function(options) {
          * @param string cmd
          * @param function fnStdout
          * @param function fnStderr
+         * @param function fnExit
          * @return void
          */
-        run: function(serviceName, cmd, fnStdout, fnStderr){
+        run: function(serviceName, cmd, fnStdout, fnStderr, fnExit){
             var execDockerCompose  = exec("docker-compose run " + serviceName + " " + cmd, { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
+            execDockerCompose.on("exit", fnExit);
         },
         
         /**
@@ -177,12 +194,14 @@ module.exports = function(options) {
          * @see https://docs.docker.com/compose/reference/up/
          * @param function fnStdout
          * @param function fnStderr
+         * @param function fnExit
          * @return void
          */
-        up: function(fnStdout, fnStderr){
+        up: function(fnStdout, fnStderr, fnExit){
             var execDockerCompose = exec("docker-compose up -d --remove-orphans", { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
+            execDockerCompose.on("exit", fnExit);
         },
         
         /**
