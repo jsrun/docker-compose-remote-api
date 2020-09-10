@@ -3,7 +3,7 @@
 var fs = require("fs"),
     yaml = require("js-yaml"),
     Docker = require('dockerode'),
-    exec = require('child_process').exec,
+    exec = require('child_process').execFile,
     spawn = require("child_process").spawn;
 
 module.exports = function(options) {
@@ -21,7 +21,7 @@ module.exports = function(options) {
          * @return void 
          */
         build: function(fnStdout, fnStderr, fnExit){
-            var execDockerCompose  = exec("docker-compose build", { cwd: cwd });
+            var execDockerCompose  = exec("docker-compose", ["compose"], { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
             execDockerCompose.on("exit", fnExit);
@@ -36,7 +36,7 @@ module.exports = function(options) {
          * @return void
          */
         create: function(fnStdout, fnStderr, fnExit){
-            var execDockerCompose  = exec("docker-compose create --force-recreate --build", { cwd: cwd });
+            var execDockerCompose  = exec("docker-compose", [ "create", "--force-recreate" ,"--build"], { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
             execDockerCompose.on("exit", fnExit);
@@ -59,7 +59,7 @@ module.exports = function(options) {
          * @return void
          */
         down: function(fnStdout, fnStderr, fnExit){
-            var execDockerCompose  = exec("docker-compose down --remove-orphans", { cwd: cwd });
+            var execDockerCompose  = exec("docker-compose",[ "down" ,"--remove-orphans"], { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
             execDockerCompose.on("exit", fnExit);
@@ -88,7 +88,7 @@ module.exports = function(options) {
          * @return void
          */
         exec: function(serviceName, cmd, fnStdout, fnStderr, fnExit){
-            var execDockerCompose  = exec("docker-compose exec " + serviceName + " " + cmd, { cwd: cwd });
+            var execDockerCompose  = exec("docker-compose",  ["exec", serviceName, cmd], { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
             execDockerCompose.on("exit", fnExit);
@@ -104,7 +104,7 @@ module.exports = function(options) {
          * @return void
          */
         kill: function(serviceName, fnStdout, fnStderr, fnExit){
-            var execDockerCompose  = exec("docker-compose kill -s SIGINT " + serviceName, { cwd: cwd });
+            var execDockerCompose  = exec("docker-compose", ["kill", "-s", "SIGINT", serviceName], { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
             execDockerCompose.on("exit", fnExit);
@@ -120,7 +120,7 @@ module.exports = function(options) {
          * @return void
          */
         restart: function(serviceName, fnStdout, fnStderr, fnExit){
-            var execDockerCompose  = exec("docker-compose restart " + serviceName, { cwd: cwd });
+            var execDockerCompose  = exec("docker-compose", ["restart", serviceName], { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
             execDockerCompose.on("exit", fnExit);
@@ -136,7 +136,7 @@ module.exports = function(options) {
          * @return void
          */
         rm: function(serviceName, fnStdout, fnStderr, fnExit){
-            var execDockerCompose  = exec("docker-compose rm -f " + serviceName, { cwd: cwd });
+            var execDockerCompose  = exec("docker-compose", ["rm","-f", "serviceName"], { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
             execDockerCompose.on("exit", fnExit);
@@ -153,7 +153,7 @@ module.exports = function(options) {
          * @return void
          */
         run: function(serviceName, cmd, fnStdout, fnStderr, fnExit){
-            var execDockerCompose  = exec("docker-compose run " + serviceName + " " + cmd, { cwd: cwd });
+            var execDockerCompose  = exec("docker-compose", ["run", serviceName, cmd], { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
             execDockerCompose.on("exit", fnExit);
@@ -166,7 +166,7 @@ module.exports = function(options) {
          */
         ps: function(cb){
             var ps = "";
-            var execDockerCompose = exec("docker-compose ps", { cwd: cwd });
+            var execDockerCompose = exec("docker-compose", ["ps"], { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { ps += data.toString() });
             execDockerCompose.on('exit', function(data) { 
                 var lines = ps.split("\n");
@@ -198,7 +198,7 @@ module.exports = function(options) {
          * @return void
          */
         up: function(fnStdout, fnStderr, fnExit){
-            var execDockerCompose = exec("docker-compose up -d --remove-orphans", { cwd: cwd });
+            var execDockerCompose = exec("docker-compose", [ "up", "-d", "--remove-orphans"], { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
             execDockerCompose.on("exit", fnExit);
@@ -242,7 +242,7 @@ module.exports = function(options) {
              * @return void
              */
             getContainerId: function(containerName, fn){
-                exec("docker-compose ps -q " + containerName, { cwd: options.cwd }, function(err, stdout, stderr){
+                exec("docker-compose", [ "ps" ,"-q" ,containerName], { cwd: options.cwd }, function(err, stdout, stderr){
                     if(err) fn(err, null);
                     else if(stderr) fn(stderr, null);
                     else if(stdout) fn(null, stdout.replace("\r", "").replace("\n", "").substr(0, 12));
