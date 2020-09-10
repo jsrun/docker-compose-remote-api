@@ -21,7 +21,7 @@ module.exports = function(options) {
          * @return void 
          */
         build: function(fnStdout, fnStderr, fnExit){
-            var execDockerCompose  = exec("docker-compose", ["compose"], { cwd: cwd });
+            var execDockerCompose  = exec("docker-compose", ["build"], { cwd: cwd });
             execDockerCompose.stdout.on('data', function(data) { if(typeof fnStdout == "function") fnStdout(data.toString()); });
             execDockerCompose.stderr.on('data', function(data) { if(typeof fnStderr == "function") fnStderr(data.toString()); });
             execDockerCompose.on("exit", fnExit);
